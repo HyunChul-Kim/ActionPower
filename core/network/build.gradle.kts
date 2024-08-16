@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.model"
+    namespace = "com.example.network"
     compileSdk = 34
 
     defaultConfig {
@@ -36,9 +36,10 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.network)
-
     implementation(libs.bundles.retrofit)
+    implementation(libs.okhttp3.logging.interceptor)
+    implementation(libs.bundles.retrofit.serialization)
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
