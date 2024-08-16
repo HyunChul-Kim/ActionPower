@@ -19,6 +19,8 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 rootProject.name = "ActionPower"
 include(":app")
 include(":core")
@@ -26,3 +28,4 @@ include(":core:data")
 include(":core:model")
 include(":core:domain")
 include(":feature")
+include(":feature:search")
