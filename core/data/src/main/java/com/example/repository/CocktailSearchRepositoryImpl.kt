@@ -13,11 +13,24 @@ class CocktailSearchRepositoryImpl @Inject constructor(
     private val cocktailSearchDataSource: CocktailSearchDataSource,
 ): CocktailSearchRepository {
 
-    override fun getFilteredCocktailList(
+    override fun getCocktailListByFilter(
         filter: String
-    ): Flow<ApiResult<SearchResult>> {
-        return safeFlow {
-            cocktailSearchDataSource.getFilteredCocktailList(filter).toDomain()
+    ): Flow<ApiResult<SearchResult>> =
+        safeFlow {
+            cocktailSearchDataSource.getCocktailListByFilter(filter).toDomain()
         }
-    }
+
+    override fun getCocktailListByFirstLetter(
+        letter: String
+    ): Flow<ApiResult<SearchResult>> =
+        safeFlow {
+            cocktailSearchDataSource.getCocktailListByFirstLetter(letter).toDomain()
+        }
+
+    override fun getCocktailListByName(
+        name: String
+    ): Flow<ApiResult<SearchResult>> =
+        safeFlow {
+            cocktailSearchDataSource.getCocktailListByName(name).toDomain()
+        }
 }

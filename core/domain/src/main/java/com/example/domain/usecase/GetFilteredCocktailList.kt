@@ -10,7 +10,7 @@ class GetFilteredCocktailList @Inject constructor(
     private val cocktailSearchRepository: CocktailSearchRepository
 ) {
     operator fun invoke(filter: CocktailSearchFilter): Flow<ApiResult<SearchResult>> =
-        cocktailSearchRepository.getFilteredCocktailList(
+        cocktailSearchRepository.getCocktailListByFilter(
             filter = filter.value
         )
 }

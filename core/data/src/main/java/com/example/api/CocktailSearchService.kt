@@ -6,7 +6,17 @@ import retrofit2.http.Query
 
 interface CocktailSearchService {
     @GET("v1/1/filter.php")
-    suspend fun getFilteredSearchResponse(
+    suspend fun getSearchByFilterResponse(
         @Query("a") filter: String,
+    ): CocktailSearchResponse
+
+    @GET("v1/1/search.php")
+    suspend fun getSearchByFirstLetterResponse(
+        @Query("f") letter: String
+    ): CocktailSearchResponse
+
+    @GET("v1/1/search.php")
+    suspend fun getSearchByNameResponse(
+        @Query("s") name: String
     ): CocktailSearchResponse
 }

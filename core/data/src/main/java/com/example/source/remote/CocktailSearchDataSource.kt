@@ -6,7 +6,15 @@ import javax.inject.Inject
 class CocktailSearchDataSource @Inject constructor(
     private val service: CocktailSearchService
 ) {
-    suspend fun getFilteredCocktailList(
+    suspend fun getCocktailListByFilter(
         filter: String,
-    ) = service.getFilteredSearchResponse(filter)
+    ) = service.getSearchByFilterResponse(filter)
+
+    suspend fun getCocktailListByFirstLetter(
+        letter: String
+    ) = service.getSearchByFirstLetterResponse(letter)
+
+    suspend fun getCocktailListByName(
+        name: String
+    ) = service.getSearchByNameResponse(name)
 }
