@@ -36,8 +36,9 @@ retrofit = "2.9.0"
 retrofitSerialization = "1.0.0"
 gson = "2.10.1"
 
-# glide
-glide = "4.16.0"
+# coil
+coil = "2.7.0"
+
 appcompat = "1.7.0"
 material = "1.12.0"
 
@@ -48,7 +49,6 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-
 
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 
@@ -101,10 +101,13 @@ retrofit-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2
 # gson
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
-# glide
-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# coil
+coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -158,5 +161,11 @@ retrofit = [
 retrofit-serialization = [
     "kotlinx-serialization-json",
     "retrofit-serialization",
+]
+
+coil = [
+    "coil-kt",
+    "coil-kt-compose",
+    "coil-kt-svg",
 ]
 

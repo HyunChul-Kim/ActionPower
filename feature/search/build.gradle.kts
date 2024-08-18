@@ -52,6 +52,8 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.ext.navigation.compose)
 
+    implementation(libs.bundles.coil)
+
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
 

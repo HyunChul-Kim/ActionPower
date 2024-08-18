@@ -11,11 +11,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,24 +34,25 @@ class SearchViewModel @Inject constructor(
         searchQuery.debounce(500)
             .distinctUntilChanged()
             .flatMapLatest { query ->
-                Log.d("#chul", query)
-            getCocktailSearchResult(query).map { apiResult ->
-                when(apiResult) {
-                    is ApiResult.Success -> {
-                        SearchResultUiState.Success(
-                            drinks = apiResult.value.drinkResources
-                        )
+                getCocktailSearchResult(query).map { apiResult ->
+                    when(apiResult) {
+                        is ApiResult.Success -> {
+                            SearchResultUiState.Success(
+                                drinks = apiResult.value.drinkResources
+                            )
+                        }
+                        else -> {
+                            SearchResultUiState.Error
+                        }
                     }
-                    else -> {
-                        SearchResultUiState.Error
-                    }
+                }.onStart {
+                    emit(SearchResultUiState.Loading)
                 }
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = SearchResultUiState.Loading,
-        )
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = SearchResultUiState.Loading
+            )
 
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
