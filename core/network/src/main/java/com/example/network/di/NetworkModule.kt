@@ -11,6 +11,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -21,7 +22,8 @@ object NetworkModule {
     fun provideRetrofit(): Retrofit =
         Retrofit
             .Builder()
-            .baseUrl("https://www.thecocktaildb.com/api/json")
+            .baseUrl("https://www.thecocktaildb.com/api/json/")
+            .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(
                 networkJson.asConverterFactory("application/json".toMediaType()),
             )

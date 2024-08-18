@@ -14,10 +14,10 @@ data class CocktailSearchDrink(
     val strDrink: String,
     @SerializedName("strDrinkThumb")
     val strDrinkThumb: String,
-    @SerializedName("isDrink")
+    @SerializedName("idDrink")
     val idDrink: String,
     @SerializedName("strCategory")
-    val strCategory: String,
+    val strCategory: String?,
 )
 
 fun CocktailSearchResponse.toDomain() = SearchResult(
@@ -26,7 +26,7 @@ fun CocktailSearchResponse.toDomain() = SearchResult(
             name = item.strDrink,
             thumbnail = item.strDrinkThumb,
             id = item.idDrink,
-            category = item.strCategory,
+            category = item.strCategory ?: "",
         )
     }
 )

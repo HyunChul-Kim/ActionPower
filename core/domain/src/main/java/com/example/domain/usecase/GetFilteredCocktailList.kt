@@ -14,7 +14,3 @@ class GetFilteredCocktailList @Inject constructor(
             filter = filter.value
         )
 }
-
-enum class CocktailSearchFilter(val value: String) {
-    ALCOHOLIC("Alcoholic")
-}
