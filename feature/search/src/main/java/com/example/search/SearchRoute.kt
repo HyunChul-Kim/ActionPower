@@ -18,6 +18,7 @@ internal fun SearchRoute(
         modifier = modifier,
         searchQuery = searchQuery,
         searchResultUiState = searchResultUiState,
-        onSearchQueryChanged = searchViewModel::onSearchQueryChanged
+        onSearchQueryChanged = searchViewModel::onSearchQueryChanged,
+        onClickFavorite = searchViewModel::onToggleFavorite
     )
 }

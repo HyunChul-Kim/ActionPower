@@ -47,7 +47,8 @@ fun SearchScreen(
     modifier: Modifier = Modifier,
     searchQuery: String = "",
     searchResultUiState: SearchResultUiState = SearchResultUiState.Loading,
-    onSearchQueryChanged: (String) -> Unit
+    onSearchQueryChanged: (String) -> Unit,
+    onClickFavorite: (UserDrinkResource, Boolean) -> Unit
 ) {
     val listState = rememberLazyListState()
 
@@ -80,7 +81,8 @@ fun SearchScreen(
                         .fillMaxSize()
                         .padding(horizontal = 10.dp),
                     listState = listState,
-                    drinkList = searchResultUiState.drinks
+                    drinkList = searchResultUiState.drinks,
+                    onClickFavorite = onClickFavorite
                 )
             }
         }
@@ -91,7 +93,8 @@ fun SearchScreen(
 private fun SearchResultColumn(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    drinkList: List<UserDrinkResource>
+    drinkList: List<UserDrinkResource>,
+    onClickFavorite: (UserDrinkResource, Boolean) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -107,7 +110,8 @@ private fun SearchResultColumn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),
-                item = drinkItem
+                item = drinkItem,
+                onClickFavorite = onClickFavorite
             )
         }
     }
@@ -116,7 +120,8 @@ private fun SearchResultColumn(
 @Composable
 private fun SearchResultItem(
     modifier: Modifier = Modifier,
-    item: UserDrinkResource
+    item: UserDrinkResource,
+    onClickFavorite: (UserDrinkResource, Boolean) -> Unit
 ) {
     Card(
         modifier = modifier,
@@ -138,7 +143,7 @@ private fun SearchResultItem(
             }
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(item.thumbnail)
+                    .data(item.drinkResource.thumbnail)
                     .size(imageSize)
                     .crossfade(true)
                     .build(),
@@ -161,14 +166,14 @@ private fun SearchResultItem(
                         .fillMaxWidth()
                         .wrapContentHeight()
                 ) {
-                    Text(text = item.name)
-                    Text(text = item.category)
+                    Text(text = item.drinkResource.name)
+                    Text(text = item.drinkResource.category)
                 }
                 FavoriteToggleButton(
                     modifier = Modifier
                         .align(Alignment.End),
                     isFavorite = item.isFavorite,
-                    onCheckedChange = {}
+                    onCheckedChange = { checked -> onClickFavorite(item, checked)}
                 )
             }
         }

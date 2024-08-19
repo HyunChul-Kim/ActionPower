@@ -1,13 +1,13 @@
 package com.example.model
 
-import com.example.model.DrinkResource
-import com.example.model.SearchResult
 import com.google.gson.annotations.SerializedName
 
 data class CocktailSearchResponse(
     @SerializedName("drinks")
-    val drinks: List<CocktailSearchDrink>,
-)
+    private val _drinks: List<CocktailSearchDrink>?,
+) {
+    val drinks get() = _drinks ?: emptyList()
+}
 
 data class CocktailSearchDrink(
     @SerializedName("strDrink")

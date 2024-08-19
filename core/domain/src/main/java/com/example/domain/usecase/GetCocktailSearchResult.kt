@@ -2,7 +2,6 @@
 
 package com.example.domain.usecase
 
-import android.util.Log
 import com.example.model.DrinkResource
 import com.example.model.SearchResult
 import com.example.domain.model.ApiResult
@@ -10,14 +9,10 @@ import com.example.domain.repository.CocktailSearchRepository
 import com.example.domain.repository.FavoriteDrinkRepository
 import com.example.model.UserDrinkResource
 import com.example.model.UserSearchResult
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class GetCocktailSearchResult @Inject constructor(
@@ -31,95 +26,59 @@ class GetCocktailSearchResult @Inject constructor(
 
     operator fun invoke(
         query: String = currentQuery,
-    ): Flow<ApiResult<UserSearchResult>> = channelFlow {
-        var result: List<DrinkResource> = emptyList()
-        var favoriteDrinkResources: List<DrinkResource> = emptyList()
-        withContext(Dispatchers.IO) {
-            if(query.isEmpty()) {
-                if(filteredCocktailList.isEmpty()) {
-                    cocktailSearchRepository.getCocktailListByFilter(filter.value)
-                        .collectLatest { apiResult ->
-                            when(apiResult) {
-                                is ApiResult.Success ->
-                                    filteredCocktailList = apiResult.value.drinkResources
-                                is ApiResult.Error ->
-                                    send(
-                                        ApiResult.Error(
-                                            code = apiResult.code,
-                                            message = apiResult.message
-                                        )
-                                    )
-                                is ApiResult.Exception ->
-                                    send(
-                                        ApiResult.Exception(
-                                            exception = apiResult.exception
-                                        )
-                                    )
-                            }
+    ): Flow<ApiResult<UserSearchResult>> {
+        val apiFlow = if(query.isEmpty()) {
+            if(filteredCocktailList.isEmpty()) {
+                cocktailSearchRepository.getCocktailListByFilter(filter.value)
+                    .onEach { apiResult ->
+                        if(apiResult is ApiResult.Success) {
+                            filteredCocktailList = apiResult.value.drinkResources
                         }
-                }
-                result = filteredCocktailList
+                    }
             } else {
-                if(query.length == 1) {
-                    cocktailSearchRepository.getCocktailListByFirstLetter(query.first().toString()).collectLatest { apiResult ->
-                        when(apiResult) {
-                            is ApiResult.Success ->
-                                result = apiResult.value.drinkResources
-                            is ApiResult.Error ->
-                                send(
-                                    ApiResult.Error(
-                                        code = apiResult.code,
-                                        message = apiResult.message
-                                    )
-                                )
-                            is ApiResult.Exception ->
-                                send(
-                                    ApiResult.Exception(
-                                        exception = apiResult.exception
-                                    )
-                                )
-                        }
-                    }
-                } else {
-                    cocktailSearchRepository.getCocktailListByName(query).collectLatest { apiResult ->
-                        when(apiResult) {
-                            is ApiResult.Success ->
-                                result = apiResult.value.drinkResources
-                            is ApiResult.Error ->
-                                send(
-                                    ApiResult.Error(
-                                        code = apiResult.code,
-                                        message = apiResult.message
-                                    )
-                                )
-                            is ApiResult.Exception ->
-                                send(
-                                    ApiResult.Exception(
-                                        exception = apiResult.exception
-                                    )
-                                )
-                        }
-                    }
+                flow {
+                    emit(
+                        ApiResult.Success(
+                            SearchResult(
+                                drinkResources = filteredCocktailList
+                            )
+                        )
+                    )
                 }
             }
-            favoriteDrinkResources = favoriteDrinkRepository.getDrinkResources().first()
+        } else {
+            if(query.length == 1) {
+                cocktailSearchRepository.getCocktailListByFirstLetter(query.first().toString())
+            } else {
+                cocktailSearchRepository.getCocktailListByName(query)
+            }
         }
-        send(
-            ApiResult.Success(
-                UserSearchResult(
-                    drinkResources = result.map { drinkResource ->
-                        UserDrinkResource(
-                            name = drinkResource.name,
-                            thumbnail = drinkResource.thumbnail,
-                            id = drinkResource.id,
-                            category = drinkResource.category,
-                            isFavorite = favoriteDrinkResources
-                                .firstOrNull { it.id == drinkResource.id } != null
+        return apiFlow.combine(favoriteDrinkRepository.getDrinkResources()) { apiResult, favoriteDrinkResources ->
+            when(apiResult) {
+                is ApiResult.Success -> {
+                    ApiResult.Success(
+                        UserSearchResult(
+                            drinkResources = apiResult.value.drinkResources.map { drinkResource ->
+                                UserDrinkResource(
+                                    isFavorite = favoriteDrinkResources
+                                        .firstOrNull { it.id == drinkResource.id } != null,
+                                    drinkResource = drinkResource
+                                )
+                            }
                         )
-                    }
-                )
-            )
-        )
+                    )
+                }
+                is ApiResult.Error ->
+                    ApiResult.Error(
+                        code = apiResult.code,
+                        message = apiResult.message
+                    )
+                is ApiResult.Exception ->
+                    ApiResult.Exception(
+                        exception = apiResult.exception
+                    )
+            }
+        }
     }
 }
 
