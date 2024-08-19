@@ -3,8 +3,9 @@ package com.example.source.local
 import com.example.database.dao.DrinkResourceDao
 import com.example.database.model.DrinkResourceEntity
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class FavoriteDrinkDataSource(
+class FavoriteDrinkDataSource @Inject constructor(
     private val drinkResourceDao: DrinkResourceDao
 ) {
 

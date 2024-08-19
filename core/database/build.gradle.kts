@@ -36,7 +36,10 @@ android {
 
 dependencies {
     api(projects.core.model)
-    implementation(libs.bundles.room)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
+    //implementation(libs.bundles.room)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

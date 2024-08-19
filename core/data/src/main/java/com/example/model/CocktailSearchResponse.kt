@@ -20,9 +20,9 @@ data class CocktailSearchDrink(
     val strCategory: String?,
 )
 
-fun CocktailSearchResponse.toDomain() = com.example.model.SearchResult(
+fun CocktailSearchResponse.toDomain() = SearchResult(
     drinkResources = drinks.map { item ->
-        com.example.model.DrinkResource(
+        DrinkResource(
             name = item.strDrink,
             thumbnail = item.strDrinkThumb,
             id = item.idDrink,

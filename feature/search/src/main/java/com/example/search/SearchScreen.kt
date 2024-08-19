@@ -39,6 +39,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.model.DrinkResource
+import com.example.model.UserDrinkResource
 import com.example.search.component.SearchBar
 
 @Composable
@@ -90,7 +91,7 @@ fun SearchScreen(
 private fun SearchResultColumn(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    drinkList: List<com.example.model.DrinkResource>
+    drinkList: List<UserDrinkResource>
 ) {
     LazyColumn(
         modifier = modifier,
@@ -115,7 +116,7 @@ private fun SearchResultColumn(
 @Composable
 private fun SearchResultItem(
     modifier: Modifier = Modifier,
-    item: com.example.model.DrinkResource
+    item: UserDrinkResource
 ) {
     Card(
         modifier = modifier,
@@ -166,7 +167,7 @@ private fun SearchResultItem(
                 FavoriteToggleButton(
                     modifier = Modifier
                         .align(Alignment.End),
-                    isFavorite = false,
+                    isFavorite = item.isFavorite,
                     onCheckedChange = {}
                 )
             }

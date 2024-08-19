@@ -38,7 +38,7 @@ android {
 dependencies {
     implementation(projects.core.network)
     implementation(projects.core.domain)
-    implementation(projects.core.database)
+    api(projects.core.database)
 
     implementation(libs.bundles.retrofit)
     implementation(libs.hilt.android)
