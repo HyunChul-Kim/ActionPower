@@ -50,9 +50,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    configurations.implementation{
+        exclude(group = "com.intellij", module = "annotations")
+    }
 }
 
 dependencies {
+    implementation(projects.core.data)
     implementation(projects.feature.search)
 
     implementation(libs.androidx.core.ktx)

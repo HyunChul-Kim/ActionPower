@@ -15,21 +15,21 @@ class CocktailSearchRepositoryImpl @Inject constructor(
 
     override fun getCocktailListByFilter(
         filter: String
-    ): Flow<ApiResult<com.example.model.SearchResult>> =
+    ): Flow<ApiResult<SearchResult>> =
         safeFlow {
             cocktailSearchDataSource.getCocktailListByFilter(filter).toDomain()
         }
 
     override fun getCocktailListByFirstLetter(
         letter: String
-    ): Flow<ApiResult<com.example.model.SearchResult>> =
+    ): Flow<ApiResult<SearchResult>> =
         safeFlow {
             cocktailSearchDataSource.getCocktailListByFirstLetter(letter).toDomain()
         }
 
     override fun getCocktailListByName(
         name: String
-    ): Flow<ApiResult<com.example.model.SearchResult>> =
+    ): Flow<ApiResult<SearchResult>> =
         safeFlow {
             cocktailSearchDataSource.getCocktailListByName(name).toDomain()
         }

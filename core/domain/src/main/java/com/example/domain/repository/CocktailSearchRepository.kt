@@ -7,13 +7,13 @@ import kotlinx.coroutines.flow.Flow
 interface CocktailSearchRepository {
     fun getCocktailListByFilter(
         filter: String,
-    ): Flow<ApiResult<com.example.model.SearchResult>>
+    ): Flow<ApiResult<SearchResult>>
 
     fun getCocktailListByFirstLetter(
         letter: String
-    ): Flow<ApiResult<com.example.model.SearchResult>>
+    ): Flow<ApiResult<SearchResult>>
 
     fun getCocktailListByName(
         name: String
-    ): Flow<ApiResult<com.example.model.SearchResult>>
+    ): Flow<ApiResult<SearchResult>>
 }
