@@ -1,7 +1,7 @@
 package com.example.domain.usecase
 
-import com.example.app.core.model.DrinkResource
-import com.example.app.core.model.SearchResult
+import com.example.model.DrinkResource
+import com.example.model.SearchResult
 import com.example.domain.model.ApiResult
 import com.example.domain.repository.CocktailSearchRepository
 import kotlinx.coroutines.Dispatchers
@@ -37,18 +37,10 @@ class GetCocktailSearchResult @Inject constructor(
                 }
             }
             result = filteredCocktailList
-            /*send(
-                ApiResult.Success(
-                    value = SearchResult(
-                        drinkResources = filteredCocktailList
-                    )
-                )
-            )*/
         } else {
             withContext(Dispatchers.IO) {
                 if(query.length == 1) {
                     cocktailSearchRepository.getCocktailListByFirstLetter(query.first().toString()).collectLatest { apiResult ->
-                        //send(apiResult)
                         if(apiResult is ApiResult.Success) {
                             result = apiResult.value.drinkResources
                         } else {
@@ -57,7 +49,6 @@ class GetCocktailSearchResult @Inject constructor(
                     }
                 } else {
                     cocktailSearchRepository.getCocktailListByName(query).collectLatest { apiResult ->
-                        //send(apiResult)
                         if(apiResult is ApiResult.Success) {
                             result = apiResult.value.drinkResources
                         } else {

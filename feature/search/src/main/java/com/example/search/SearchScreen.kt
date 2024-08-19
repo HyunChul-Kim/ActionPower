@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,11 +20,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -43,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import com.example.app.core.model.DrinkResource
+import com.example.model.DrinkResource
 import com.example.search.component.SearchBar
 
 @Composable
@@ -95,7 +90,7 @@ fun SearchScreen(
 private fun SearchResultColumn(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    drinkList: List<DrinkResource>
+    drinkList: List<com.example.model.DrinkResource>
 ) {
     LazyColumn(
         modifier = modifier,
@@ -120,7 +115,7 @@ private fun SearchResultColumn(
 @Composable
 private fun SearchResultItem(
     modifier: Modifier = Modifier,
-    item: DrinkResource
+    item: com.example.model.DrinkResource
 ) {
     Card(
         modifier = modifier,

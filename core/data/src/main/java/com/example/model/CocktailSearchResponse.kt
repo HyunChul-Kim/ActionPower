@@ -1,7 +1,7 @@
 package com.example.model
 
-import com.example.app.core.model.DrinkResource
-import com.example.app.core.model.SearchResult
+import com.example.model.DrinkResource
+import com.example.model.SearchResult
 import com.google.gson.annotations.SerializedName
 
 data class CocktailSearchResponse(
@@ -20,9 +20,9 @@ data class CocktailSearchDrink(
     val strCategory: String?,
 )
 
-fun CocktailSearchResponse.toDomain() = SearchResult(
+fun CocktailSearchResponse.toDomain() = com.example.model.SearchResult(
     drinkResources = drinks.map { item ->
-        DrinkResource(
+        com.example.model.DrinkResource(
             name = item.strDrink,
             thumbnail = item.strDrinkThumb,
             id = item.idDrink,

@@ -1,4 +1,4 @@
-package com.example.app.core.model
+package com.example.model
 
 data class DrinkResource(
     val name: String,

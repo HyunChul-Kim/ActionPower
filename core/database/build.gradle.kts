@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.domain"
+    namespace = "com.example.database"
     compileSdk = 34
 
     defaultConfig {
@@ -36,6 +36,8 @@ android {
 
 dependencies {
     api(projects.core.model)
+    implementation(libs.bundles.room)
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 

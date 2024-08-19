@@ -1,6 +1,6 @@
 package com.example.repository
 
-import com.example.app.core.model.SearchResult
+import com.example.model.SearchResult
 import com.example.domain.model.ApiResult
 import com.example.domain.repository.CocktailSearchRepository
 import com.example.model.toDomain
@@ -15,21 +15,21 @@ class CocktailSearchRepositoryImpl @Inject constructor(
 
     override fun getCocktailListByFilter(
         filter: String
-    ): Flow<ApiResult<SearchResult>> =
+    ): Flow<ApiResult<com.example.model.SearchResult>> =
         safeFlow {
             cocktailSearchDataSource.getCocktailListByFilter(filter).toDomain()
         }
 
     override fun getCocktailListByFirstLetter(
         letter: String
-    ): Flow<ApiResult<SearchResult>> =
+    ): Flow<ApiResult<com.example.model.SearchResult>> =
         safeFlow {
             cocktailSearchDataSource.getCocktailListByFirstLetter(letter).toDomain()
         }
 
     override fun getCocktailListByName(
         name: String
-    ): Flow<ApiResult<SearchResult>> =
+    ): Flow<ApiResult<com.example.model.SearchResult>> =
         safeFlow {
             cocktailSearchDataSource.getCocktailListByName(name).toDomain()
         }
