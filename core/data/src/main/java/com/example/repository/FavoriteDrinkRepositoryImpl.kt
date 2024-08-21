@@ -4,6 +4,7 @@ import com.example.database.model.DrinkResourceEntity
 import com.example.database.model.toExternalModel
 import com.example.model.DrinkResource
 import com.example.domain.repository.FavoriteDrinkRepository
+import com.example.model.DrinkDetailResource
 import com.example.source.local.FavoriteDrinkDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,6 +26,17 @@ class FavoriteDrinkRepositoryImpl @Inject constructor(
                 name = drinkResource.name,
                 thumbnail = drinkResource.thumbnail,
                 category = drinkResource.category
+            )
+        )
+    }
+
+    override suspend fun insertDrinkResource(drinkDetailResource: DrinkDetailResource) {
+        favoriteDrinkDataSource.insertDrinkResource(
+            DrinkResourceEntity(
+                id = drinkDetailResource.id,
+                name = drinkDetailResource.name,
+                thumbnail = drinkDetailResource.thumbnail,
+                category = drinkDetailResource.category
             )
         )
     }

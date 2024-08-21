@@ -1,13 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.kapt)
     alias(libs.plugins.compose.compiler)
 }
 
 android {
-    namespace = "com.example.detail"
+    namespace = "com.example.designsystem"
     compileSdk = 34
 
     defaultConfig {
@@ -33,29 +31,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
 }
 
 dependencies {
-    implementation(projects.core.domain)
-    implementation(projects.core.designsystem)
-
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.compose)
-
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    implementation(libs.hilt.ext.navigation.compose)
-
-    implementation(libs.bundles.coil)
-
-    implementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.androidx.compose.ui.tooling.preview)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

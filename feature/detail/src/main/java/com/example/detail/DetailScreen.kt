@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
@@ -24,17 +25,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.designsystem.component.FavoriteToggleButton
 import com.example.model.DrinkDetailResource
+import com.example.model.FavoriteData
 import com.example.model.Language
 
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
     detailUiState: DetailUiState = DetailUiState.Loading,
+    onClickFavorite: (DrinkDetailResource, Boolean) -> Unit,
 ) {
 
     Column(
@@ -46,7 +51,8 @@ fun DetailScreen(
                 DetailResultColumn(
                     modifier = Modifier
                         .fillMaxSize(),
-                    detailUiState.drinkDetailResource
+                    favoriteDrinkDetailData = detailUiState.favoriteDrinkDetailData,
+                    onClickFavorite = onClickFavorite
                 )
             }
 
@@ -70,7 +76,8 @@ fun DetailScreen(
 @Composable
 private fun DetailResultColumn(
     modifier: Modifier = Modifier,
-    drinkDetailResource: DrinkDetailResource
+    favoriteDrinkDetailData: FavoriteData<DrinkDetailResource>,
+    onClickFavorite: (DrinkDetailResource, Boolean) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -81,7 +88,7 @@ private fun DetailResultColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f),
-            model = drinkDetailResource.thumbnail,
+            model = favoriteDrinkDetailData.data.thumbnail,
             contentDescription = "detail image",
             contentScale = ContentScale.Crop,
         )
@@ -94,52 +101,77 @@ private fun DetailResultColumn(
                 ),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            MainTitle(title = drinkDetailResource.name)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                MainTitle(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    title = favoriteDrinkDetailData.data.name
+                )
+                FavoriteToggleButton(
+                    isFavorite = favoriteDrinkDetailData.isFavorite,
+                    onCheckedChange = { checked ->
+                        onClickFavorite(favoriteDrinkDetailData.data, checked)
+                    }
+                )
+            }
             SubContent(
                 title = stringResource(
                     id = R.string.feature_detail_instructions_title
                 ),
-                content = drinkDetailResource.instructionsToString
+                content = favoriteDrinkDetailData.data.instructionsToString
             )
             SubContent(
                 title = stringResource(
                     id = R.string.feature_detail_ingredients_title
                 ),
-                content = drinkDetailResource.ingredientsToString
+                content = favoriteDrinkDetailData.data.ingredientsToString
             )
             SubContent(
                 title = stringResource(
                     id = R.string.feature_detail_iba_title
                 ),
-                content = drinkDetailResource.iba
+                content = favoriteDrinkDetailData.data.iba
             )
             SubContent(
                 title = stringResource(
                     id = R.string.feature_detail_category_title
                 ),
-                content = drinkDetailResource.category
+                content = favoriteDrinkDetailData.data.category
             )
-            ModifiedDate(modifiedDate = drinkDetailResource.dateModified)
+            ModifiedDate(modifiedDate = favoriteDrinkDetailData.data.dateModified)
         }
     }
 }
 
 @Composable
 private fun MainTitle(
+    modifier: Modifier = Modifier,
     title: String
 ) {
     Text(
+        modifier = modifier,
         text = title,
         fontSize = 30.sp,
-        fontWeight = FontWeight.Bold
+        fontWeight = FontWeight.Bold,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+        lineHeight = 35.sp
     )
 }
 
 @Composable
 private fun SubTitle(
+    modifier: Modifier = Modifier,
     title: String
 ) {
     Text(
+        modifier = modifier,
         text = title,
         fontSize = 20.sp,
         fontWeight = FontWeight.SemiBold
@@ -148,12 +180,17 @@ private fun SubTitle(
 
 @Composable
 private fun SubContent(
+    modifier: Modifier = Modifier,
     title: String,
     content: String
 ) {
     if(content.isEmpty()) return
-    SubTitle(title = title)
-    Text(text = content)
+    Column(
+        modifier = modifier
+    ) {
+        SubTitle(title = title)
+        Text(text = content)
+    }
 }
 
 @Composable
@@ -195,21 +232,25 @@ private fun DetailResultColumnPreview() {
         modifier = Modifier
             .wrapContentSize()
             .background(Color.White),
-        drinkDetailResource = DrinkDetailResource(
-            name = "Margarita",
-            category = "Ordinary Drink",
-            iba = "Contemporary Classics",
-            instructions = instructions,
-            ingredients = ingredients,
-            id = "11007",
-            thumbnail = "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg",
-            dateModified = "2015-08-18 14:42:59",
-            instructionsToString = instructions.entries.joinToString(
-                separator = "\n\n"
-            ) { entry ->
-                "${entry.key} : ${entry.value}"
-            },
-            ingredientsToString = ingredients.joinToString()
-        )
+        favoriteDrinkDetailData = FavoriteData(
+            isFavorite = true,
+            data = DrinkDetailResource(
+                name = "MargaritaMargarita",
+                category = "Ordinary Drink",
+                iba = "Contemporary Classics",
+                instructions = instructions,
+                ingredients = ingredients,
+                id = "11007",
+                thumbnail = "https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg",
+                dateModified = "2015-08-18 14:42:59",
+                instructionsToString = instructions.entries.joinToString(
+                    separator = "\n\n"
+                ) { entry ->
+                    "${entry.key} : ${entry.value}"
+                },
+                ingredientsToString = ingredients.joinToString()
+            )
+        ),
+        onClickFavorite = {_,_ -> }
     )
 }

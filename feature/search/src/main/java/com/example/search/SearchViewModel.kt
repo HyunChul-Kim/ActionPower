@@ -1,18 +1,16 @@
 package com.example.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.model.ApiResult
 import com.example.domain.repository.FavoriteDrinkRepository
 import com.example.domain.usecase.GetCocktailSearchResult
-import com.example.model.UserDrinkResource
+import com.example.model.DrinkResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -35,11 +33,10 @@ class SearchViewModel @Inject constructor(
             .distinctUntilChanged()
             .flatMapLatest { query ->
                 getCocktailSearchResult(query).map { apiResult ->
-                    Log.d("#chul", "SearchViewModel apiResult")
                     when(apiResult) {
                         is ApiResult.Success -> {
                             SearchResultUiState.Success(
-                                drinks = apiResult.value.drinkResources
+                                drinks = apiResult.value
                             )
                         }
                         else -> {
@@ -59,15 +56,13 @@ class SearchViewModel @Inject constructor(
         _searchQuery.value = query
     }
 
-    fun onToggleFavorite(userDrinkResource: UserDrinkResource, isFavorite: Boolean) {
+    fun onToggleFavorite(drinkResource: DrinkResource, isFavorite: Boolean) {
         viewModelScope.launch {
             if(isFavorite) {
-                favoriteDrinkRepository.insertDrinkResource(
-                    userDrinkResource.drinkResource
-                )
+                favoriteDrinkRepository.insertDrinkResource(drinkResource)
             } else {
                 favoriteDrinkRepository.deleteDrinkResource(
-                    userDrinkResource.drinkResource.id
+                    drinkResource.id
                 )
             }
         }

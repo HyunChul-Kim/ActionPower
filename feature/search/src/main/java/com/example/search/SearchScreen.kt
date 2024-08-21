@@ -19,13 +19,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,7 +33,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import com.example.model.UserDrinkResource
+import com.example.designsystem.component.FavoriteToggleButton
+import com.example.model.DrinkResource
+import com.example.model.FavoriteData
 import com.example.search.component.SearchBar
 
 @Composable
@@ -47,7 +44,7 @@ fun SearchScreen(
     searchQuery: String = "",
     searchResultUiState: SearchResultUiState = SearchResultUiState.Loading,
     onSearchQueryChanged: (String) -> Unit,
-    onClickFavorite: (UserDrinkResource, Boolean) -> Unit,
+    onClickFavorite: (DrinkResource, Boolean) -> Unit,
     onDrinkItemClick: (String) -> Unit,
 ) {
     val listState = rememberLazyListState()
@@ -94,8 +91,8 @@ fun SearchScreen(
 private fun SearchResultColumn(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
-    drinkList: List<UserDrinkResource>,
-    onClickFavorite: (UserDrinkResource, Boolean) -> Unit,
+    drinkList: List<FavoriteData<DrinkResource>>,
+    onClickFavorite: (DrinkResource, Boolean) -> Unit,
     onDrinkItemClick: (String) -> Unit
 ) {
     LazyColumn(
@@ -123,15 +120,15 @@ private fun SearchResultColumn(
 @Composable
 private fun SearchResultItem(
     modifier: Modifier = Modifier,
-    item: UserDrinkResource,
-    onClickFavorite: (UserDrinkResource, Boolean) -> Unit,
+    item: FavoriteData<DrinkResource>,
+    onClickFavorite: (DrinkResource, Boolean) -> Unit,
     onDrinkItemClick: (String) -> Unit
 ) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(0.dp),
         onClick = {
-            onDrinkItemClick(item.drinkResource.id)
+            onDrinkItemClick(item.data.id)
         }
     ) {
         BoxWithConstraints(
@@ -150,7 +147,7 @@ private fun SearchResultItem(
             }
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(item.drinkResource.thumbnail)
+                    .data(item.data.thumbnail)
                     .size(imageSize)
                     .crossfade(true)
                     .build(),
@@ -173,41 +170,16 @@ private fun SearchResultItem(
                         .fillMaxWidth()
                         .wrapContentHeight()
                 ) {
-                    Text(text = item.drinkResource.name)
-                    Text(text = item.drinkResource.category)
+                    Text(text = item.data.name)
+                    Text(text = item.data.category)
                 }
                 FavoriteToggleButton(
                     modifier = Modifier
                         .align(Alignment.End),
                     isFavorite = item.isFavorite,
-                    onCheckedChange = { checked -> onClickFavorite(item, checked)}
+                    onCheckedChange = { checked -> onClickFavorite(item.data, checked)}
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun FavoriteToggleButton(
-    modifier: Modifier = Modifier,
-    isFavorite: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    IconToggleButton(
-        modifier = modifier,
-        checked = isFavorite,
-        onCheckedChange = onCheckedChange
-    ) {
-        if(isFavorite) {
-            Icon(
-                imageVector = Icons.Filled.Star,
-                contentDescription = null
-            )
-        } else {
-            Icon(
-                imageVector = Icons.Outlined.StarBorder,
-                contentDescription = null
-            )
         }
     }
 }

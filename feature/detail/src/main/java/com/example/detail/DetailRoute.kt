@@ -16,5 +16,6 @@ internal fun DetailRoute(
     DetailScreen(
         modifier = modifier,
         detailUiState = detailUiState,
+        onClickFavorite = detailViewModel::onToggleFavorite
     )
 }

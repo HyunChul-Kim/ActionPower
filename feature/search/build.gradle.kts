@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation(projects.core.domain)
+    implementation(projects.core.designsystem)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.compose)

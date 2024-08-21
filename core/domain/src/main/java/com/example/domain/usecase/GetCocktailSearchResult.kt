@@ -5,8 +5,7 @@ import com.example.model.SearchResult
 import com.example.domain.model.ApiResult
 import com.example.domain.repository.CocktailSearchRepository
 import com.example.domain.repository.FavoriteDrinkRepository
-import com.example.model.UserDrinkResource
-import com.example.model.UserSearchResult
+import com.example.model.FavoriteData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
@@ -24,7 +23,7 @@ class GetCocktailSearchResult @Inject constructor(
 
     operator fun invoke(
         query: String = currentQuery,
-    ): Flow<ApiResult<UserSearchResult>> {
+    ): Flow<ApiResult<List<FavoriteData<DrinkResource>>>> {
         val apiFlow = if(query.isEmpty()) {
             if(filteredCocktailList.isEmpty()) {
                 cocktailSearchRepository.getCocktailListByFilter(filter.value)
@@ -55,15 +54,13 @@ class GetCocktailSearchResult @Inject constructor(
             when(apiResult) {
                 is ApiResult.Success -> {
                     ApiResult.Success(
-                        UserSearchResult(
-                            drinkResources = apiResult.value.drinkResources.map { drinkResource ->
-                                UserDrinkResource(
-                                    isFavorite = favoriteDrinkResources
-                                        .firstOrNull { it.id == drinkResource.id } != null,
-                                    drinkResource = drinkResource
-                                )
-                            }
-                        )
+                        apiResult.value.drinkResources.map { drinkResource ->
+                            FavoriteData(
+                                isFavorite = favoriteDrinkResources
+                                    .firstOrNull { it.id == drinkResource.id } != null,
+                                data = drinkResource
+                            )
+                        }
                     )
                 }
                 is ApiResult.Error ->
