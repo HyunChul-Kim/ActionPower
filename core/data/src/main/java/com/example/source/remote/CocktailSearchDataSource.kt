@@ -17,4 +17,8 @@ class CocktailSearchDataSource @Inject constructor(
     suspend fun getCocktailListByName(
         name: String
     ) = service.getSearchByNameResponse(name)
+
+    suspend fun getCocktailDetailById(
+        id: String
+    ) = service.getCocktailDetailsById(id)
 }

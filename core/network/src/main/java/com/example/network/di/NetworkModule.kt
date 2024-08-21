@@ -23,7 +23,6 @@ object NetworkModule {
         Retrofit
             .Builder()
             .baseUrl("https://www.thecocktaildb.com/api/json/")
-            .addConverterFactory(GsonConverterFactory.create())
             .addConverterFactory(
                 networkJson.asConverterFactory("application/json".toMediaType()),
             )
@@ -43,5 +42,6 @@ object NetworkModule {
 
     private val networkJson: Json = Json {
         ignoreUnknownKeys = true
+        coerceInputValues = true
     }
 }

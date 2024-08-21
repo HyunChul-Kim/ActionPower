@@ -1,23 +1,24 @@
 package com.example.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CocktailSearchResponse(
-    @SerializedName("drinks")
-    private val _drinks: List<CocktailSearchDrink>?,
-) {
-    val drinks get() = _drinks ?: emptyList()
-}
+    @SerialName("drinks")
+    val drinks: List<CocktailSearchDrink> = emptyList(),
+)
 
+@Serializable
 data class CocktailSearchDrink(
-    @SerializedName("strDrink")
+    @SerialName("strDrink")
     val strDrink: String,
-    @SerializedName("strDrinkThumb")
-    val strDrinkThumb: String,
-    @SerializedName("idDrink")
+    @SerialName("strDrinkThumb")
+    val strDrinkThumb: String = "",
+    @SerialName("idDrink")
     val idDrink: String,
-    @SerializedName("strCategory")
-    val strCategory: String?,
+    @SerialName("strCategory")
+    val strCategory: String = "",
 )
 
 fun CocktailSearchResponse.toDomain() = SearchResult(
@@ -26,7 +27,7 @@ fun CocktailSearchResponse.toDomain() = SearchResult(
             name = item.strDrink,
             thumbnail = item.strDrinkThumb,
             id = item.idDrink,
-            category = item.strCategory ?: "",
+            category = item.strCategory,
         )
     }
 )
