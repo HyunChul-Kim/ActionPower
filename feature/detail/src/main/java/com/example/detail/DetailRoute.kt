@@ -11,11 +11,10 @@ internal fun DetailRoute(
     modifier: Modifier = Modifier,
     detailViewModel: DetailViewModel = hiltViewModel()
 ) {
-    val drinkId by detailViewModel.selectedDrinkId.collectAsStateWithLifecycle()
+    val detailUiState by detailViewModel.detailUiState.collectAsStateWithLifecycle()
 
     DetailScreen(
         modifier = modifier,
-        drinkId = drinkId,
-        viewModel = detailViewModel
+        detailUiState = detailUiState,
     )
 }

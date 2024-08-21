@@ -8,7 +8,9 @@ data class DrinkDetailResource(
     val dateModified: String = "",
     val iba: String = "",
     val instructions: Map<String, String>,
-    val ingredients: List<String>
+    val ingredients: List<String>,
+    val instructionsToString: String,
+    val ingredientsToString: String
 )
 
 enum class Language(

@@ -69,14 +69,8 @@ data class CocktailDetailDrink(
     val strIngredient15: String = "",
 )
 
-fun CocktailDetailDrink.toDomain() = DrinkDetailResource(
-    name = strDrink,
-    thumbnail = strDrinkThumb,
-    id = idDrink,
-    category = strCategory,
-    dateModified = dateModified,
-    iba = strIBA,
-    instructions = mapOf(
+fun CocktailDetailDrink.toDomain(): DrinkDetailResource {
+    val instructions = mapOf(
         Language.Default.value to strInstructions,
         Language.ES.value to strInstructionsES,
         Language.DE.value to strInstructionsDE,
@@ -84,8 +78,8 @@ fun CocktailDetailDrink.toDomain() = DrinkDetailResource(
         Language.IT.value to strInstructionsIT,
         Language.ZhHans.value to strInstructionsZhHans,
         Language.ZhHant.value to strInstructionsZhHant
-    ).filter { it.value.isNotEmpty() },
-    ingredients = listOf(
+    ).filter { it.value.isNotEmpty() }
+    val ingredients = listOf(
         strIngredient1, strIngredient2,
         strIngredient3, strIngredient4,
         strIngredient5, strIngredient6,
@@ -95,4 +89,20 @@ fun CocktailDetailDrink.toDomain() = DrinkDetailResource(
         strIngredient13, strIngredient14,
         strIngredient15,
     ).filter { it.isNotEmpty() }
-)
+    return DrinkDetailResource(
+        name = strDrink,
+        thumbnail = strDrinkThumb,
+        id = idDrink,
+        category = strCategory,
+        dateModified = dateModified,
+        iba = strIBA,
+        instructions = instructions,
+        ingredients = ingredients,
+        instructionsToString = instructions.entries.joinToString(
+            separator = "\n\n"
+        ) { entry ->
+            "${entry.key} : ${entry.value}"
+        },
+        ingredientsToString = ingredients.joinToString()
+    )
+}

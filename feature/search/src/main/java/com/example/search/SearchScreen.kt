@@ -35,10 +35,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
+import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
-import com.example.model.DrinkResource
 import com.example.model.UserDrinkResource
 import com.example.search.component.SearchBar
 
@@ -149,7 +148,7 @@ private fun SearchResultItem(
                     width
                 )
             }
-            SubcomposeAsyncImage(
+            AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(item.drinkResource.thumbnail)
                     .size(imageSize)

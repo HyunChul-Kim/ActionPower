@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_detail_instructions_title">Instructions</string>
+    <string name="feature_detail_ingredients_title">Ingredients</string>
+    <string name="feature_detail_iba_title">IBA</string>
+    <string name="feature_detail_category_title">Category</string>
+    <string name="feature_detail_modified_date">modified date : %s</string>
+</resources>
