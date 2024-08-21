@@ -48,7 +48,8 @@ fun SearchScreen(
     searchQuery: String = "",
     searchResultUiState: SearchResultUiState = SearchResultUiState.Loading,
     onSearchQueryChanged: (String) -> Unit,
-    onClickFavorite: (UserDrinkResource, Boolean) -> Unit
+    onClickFavorite: (UserDrinkResource, Boolean) -> Unit,
+    onDrinkItemClick: (String) -> Unit,
 ) {
     val listState = rememberLazyListState()
 
@@ -82,7 +83,8 @@ fun SearchScreen(
                         .padding(horizontal = 10.dp),
                     listState = listState,
                     drinkList = searchResultUiState.drinks,
-                    onClickFavorite = onClickFavorite
+                    onClickFavorite = onClickFavorite,
+                    onDrinkItemClick = onDrinkItemClick
                 )
             }
         }
@@ -94,7 +96,8 @@ private fun SearchResultColumn(
     modifier: Modifier = Modifier,
     listState: LazyListState = rememberLazyListState(),
     drinkList: List<UserDrinkResource>,
-    onClickFavorite: (UserDrinkResource, Boolean) -> Unit
+    onClickFavorite: (UserDrinkResource, Boolean) -> Unit,
+    onDrinkItemClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = modifier,
@@ -111,7 +114,8 @@ private fun SearchResultColumn(
                     .fillMaxWidth()
                     .wrapContentHeight(),
                 item = drinkItem,
-                onClickFavorite = onClickFavorite
+                onClickFavorite = onClickFavorite,
+                onDrinkItemClick = onDrinkItemClick
             )
         }
     }
@@ -121,11 +125,15 @@ private fun SearchResultColumn(
 private fun SearchResultItem(
     modifier: Modifier = Modifier,
     item: UserDrinkResource,
-    onClickFavorite: (UserDrinkResource, Boolean) -> Unit
+    onClickFavorite: (UserDrinkResource, Boolean) -> Unit,
+    onDrinkItemClick: (String) -> Unit
 ) {
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(0.dp),
+        onClick = {
+            onDrinkItemClick(item.drinkResource.id)
+        }
     ) {
         BoxWithConstraints(
             modifier = Modifier

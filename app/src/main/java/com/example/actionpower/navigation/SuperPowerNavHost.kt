@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.example.detail.detailScreen
+import com.example.detail.navigateToDetail
 import com.example.search.searchScreen
 
 @Composable
@@ -15,6 +17,9 @@ internal fun SuperPowerNavHost(
         modifier = modifier,
         navController = navController,
         startDestination = AppDestination.SEARCH.route) {
-        searchScreen()
+        searchScreen(
+            onDrinkItemClick = navController::navigateToDetail
+        )
+        detailScreen()
     }
 }

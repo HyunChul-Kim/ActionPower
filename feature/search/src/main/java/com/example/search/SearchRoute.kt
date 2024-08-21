@@ -9,6 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 @Composable
 internal fun SearchRoute(
     modifier: Modifier = Modifier,
+    onDrinkItemClick: (String) -> Unit,
     searchViewModel: SearchViewModel = hiltViewModel()
 ) {
     val searchResultUiState by searchViewModel.searchResultUiState.collectAsStateWithLifecycle()
@@ -19,6 +20,7 @@ internal fun SearchRoute(
         searchQuery = searchQuery,
         searchResultUiState = searchResultUiState,
         onSearchQueryChanged = searchViewModel::onSearchQueryChanged,
-        onClickFavorite = searchViewModel::onToggleFavorite
+        onClickFavorite = searchViewModel::onToggleFavorite,
+        onDrinkItemClick = onDrinkItemClick,
     )
 }

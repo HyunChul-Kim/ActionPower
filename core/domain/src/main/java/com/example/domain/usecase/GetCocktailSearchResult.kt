@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalStdlibApi::class)
-
 package com.example.domain.usecase
 
 import com.example.model.DrinkResource
