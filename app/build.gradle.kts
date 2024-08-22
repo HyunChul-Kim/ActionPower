@@ -59,6 +59,7 @@ dependencies {
     implementation(projects.core.data)
     implementation(projects.feature.search)
     implementation(projects.feature.detail)
+    implementation(projects.feature.video)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

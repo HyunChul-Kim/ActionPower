@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<style>
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #000000;
+        overflow: hidden;
+        position: fixed;
+    }
+</style>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- defer forces the library to execute after the html page is fully parsed. -->
+    <!-- This is needed to avoid race conditions, where the library executes and calls `onYouTubeIframeAPIReady` before the page is fully parsed. -->
+    <!-- See #873 on GitHub -->
+    <script defer src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+<div id="player"></div>
+</body>
+<script>
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+    var timerId;
+    var interval = <<arg_interval>>;
+    var bridge = window.YoutubePlayerAndroid;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '100%',
+        width: '100%',
+        //videoId: 'Dd1N9NrPt3A',
+        videoId: '<<arg_video_id>>',
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        },
+        playerVars: <<arg_player_vars>>
+      });
+    }
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+      event.target.playVideo();
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+    function onPlayerStateChange(event) {
+      if(event.data == YT.PlayerState.PLAYING && !done) {
+        startSendCurrentTimeInterval();
+        done = true;
+      }
+    }
+    function stopVideo() {
+      player.stopVideo();
+    }
+    function startSendCurrentTimeInterval() {
+      timerId = setInterval(function() {
+        bridge.sendVideoCurrentTime( player.getCurrentTime() )
+      }, interval );
+    }
+    function getCurrentTime() {
+        console.log("getCurrentTime()");
+        return player.getCurrentTime();
+    }
+
+</script>
+</html>

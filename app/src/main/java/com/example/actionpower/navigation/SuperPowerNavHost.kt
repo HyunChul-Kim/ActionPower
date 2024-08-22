@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import com.example.detail.detailScreen
 import com.example.detail.navigateToDetail
 import com.example.search.searchScreen
+import com.example.video.videoScreen
 
 @Composable
 internal fun SuperPowerNavHost(
@@ -21,5 +22,6 @@ internal fun SuperPowerNavHost(
             onDrinkItemClick = navController::navigateToDetail
         )
         detailScreen()
+        videoScreen()
     }
 }
