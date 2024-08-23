@@ -37,6 +37,8 @@ android {
 
 dependencies {
     implementation(projects.feature.youtubeplayer)
+    implementation(projects.core.domain)
+    implementation(projects.feature.script)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.androidx.compose)

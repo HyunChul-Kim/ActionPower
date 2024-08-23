@@ -11,9 +11,12 @@ fun VideoRoute(
     modifier: Modifier = Modifier,
     videoViewModel: VideoViewModel = hiltViewModel()
 ) {
+    val sectionScripts by videoViewModel.sectionScripts.collectAsStateWithLifecycle()
 
     VideoScreen(
         modifier = modifier,
         updateCurrentTime = videoViewModel::updateCurrentTime,
+        sectionScripts = { sectionScripts },
+        interval = videoViewModel.sectionTime
     )
 }

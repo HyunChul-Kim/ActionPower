@@ -3,11 +3,12 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.example.model"
+    namespace = "com.example.script"
     compileSdk = 34
 
     defaultConfig {
@@ -36,16 +37,17 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.network)
-    implementation(projects.core.domain)
     implementation(projects.core.util)
-    api(projects.core.database)
-
-    implementation(libs.bundles.retrofit)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementation(projects.core.domain)
 
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.androidx.compose)
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.ext.navigation.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
