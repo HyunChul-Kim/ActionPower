@@ -33,4 +33,7 @@
          4. 가장 최하위의 단어 data를 flat하게 list로 변경하고 현재 재생시간과 분 단위 범위에 해당하는 단어 data의 select 값을 설정
          5. view에서는 select 값을 이용하여 text의 background 값 변경
          6. 하이라이트 위치가 변경 될 때 해당 position으로 스크롤 되도록 구현
+
+# 기타
+* apk [경로](https://github.com/HyunChul-Kim/ActionPower/tree/master/app/build/outputs/apk/debug)
    
