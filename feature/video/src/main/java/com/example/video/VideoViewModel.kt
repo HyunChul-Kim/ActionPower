@@ -27,7 +27,7 @@ class VideoViewModel @Inject constructor(
     private val _currentTime = MutableStateFlow(0)
     val currentTime get() = _currentTime.asStateFlow()
     val scriptName = "test_data_lexical.txt"
-    val sectionTime = 10
+    val sectionTime = 60
 
     private val script = getScriptTextItem(scriptName)
         .stateIn(
